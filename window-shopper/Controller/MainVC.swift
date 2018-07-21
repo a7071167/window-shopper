@@ -14,19 +14,18 @@ class MainVC: UIViewController {
     
     @IBOutlet weak var priceTxt: CurrencyTextField!
     
+    @IBOutlet weak var resultLabel: UILabel!
     
+    @IBOutlet weak var hoursLabel: UILabel!
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        wageTxt.placeholder = "Your hourly wage"
-        priceTxt.placeholder = "Item price"
         createButton()
+        resultLabel.isHidden = true
+        hoursLabel.isHidden = true
+        
     }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        customizeTextField()
-    }
+
     
     func createButton() {
         let calcButton = UIButton(frame: CGRect(x: 0, y: 0, width: view.frame.size.width, height: 60))
@@ -40,13 +39,26 @@ class MainVC: UIViewController {
     }
     
     @objc func calculate() {
-        print(")))")
+        if let wageTxt = wageTxt.text, let priceTxt = priceTxt.text {
+            if let wage = Double(wageTxt), let price = Double(priceTxt) {
+                view.endEditing(true)
+                resultLabel.isHidden = false
+                hoursLabel.isHidden = false
+                resultLabel.text = "\(Wage.getHours(forWage: wage, andPrice: price))"
+            }
+        }
     }
     
-    func customizeTextField() {
-        
+    @IBAction func clearCalculatorPressed(_ sender: Any) {
+        resultLabel.isHidden = true
+        hoursLabel.isHidden = true
+        wageTxt.text = ""
+        priceTxt.text = ""
         
     }
+    
+    
+    
 
 }
 
